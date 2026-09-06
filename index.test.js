@@ -3,15 +3,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { deliverEvent, DEFAULT_MAX_RETRIES } from './index.js';
 
-test('v1.0 allows three retries after the initial delivery', async () => {
+test('v1.1 allows five retries after the initial delivery', async () => {
   const attempts = [];
   const result = await deliverEvent({ type: 'invoice.paid' }, async (_, { attempt }) => {
     attempts.push(attempt);
     return { status: 503 };
   });
-  assert.equal(DEFAULT_MAX_RETRIES, 3);
-  assert.deepEqual(attempts, [1, 2, 3, 4]);
-  assert.deepEqual(result, { delivered: false, attempts: 4, status: 503 });
+  assert.equal(DEFAULT_MAX_RETRIES, 5);
+  assert.deepEqual(attempts, [1, 2, 3, 4, 5, 6]);
+  assert.deepEqual(result, { delivered: false, attempts: 6, status: 503 });
 });
 
 test('stops on success and does not retry HTTP 400', async () => {
