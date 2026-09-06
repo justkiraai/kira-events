@@ -1,0 +1,9 @@
+{
+  "name": "kira-events",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Local webhook retry policy fixture for documentation testing",
+  "scripts": { "test": "node --test" },
+  "engines": { "node": ">=20" }
+}
