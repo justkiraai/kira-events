@@ -17,8 +17,8 @@ export async function deliverEvent(event, send, { maxRetries = DEFAULT_MAX_RETRI
     if (Number.isInteger(status) && status >= 200 && status < 300) {
       return { delivered: true, attempts: attempt, status };
     }
-    const isRetryable = status === null || status === 429 || (status >= 500 && status <= 599);
-    if (!isRetryable || attempt === maxRetries + 1) {
+    const shouldRetry = status === null || status === 429 || (status >= 500 && status <= 599);
+    if (!shouldRetry || attempt === maxRetries + 1) {
       return { delivered: false, attempts: attempt, status };
     }
   }
