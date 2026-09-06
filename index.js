@@ -1,5 +1,5 @@
 /** Webhook delivery policy fixture; injected transport keeps tests offline. */
-export const DEFAULT_MAX_RETRIES = 3;
+export const DEFAULT_MAX_RETRIES = 5;
 
 /** Deliver an event, retrying transport errors, HTTP 429, and HTTP 5xx. */
 export async function deliverEvent(event, send, { maxRetries = DEFAULT_MAX_RETRIES } = {}) {
