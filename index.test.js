@@ -20,12 +20,13 @@ test('stops on success and does not retry HTTP 400', async () => {
   assert.equal((await deliverEvent({}, async () => ({ status: 400 }))).attempts, 1);
 });
 
-test('retries 429 and transport errors before recovering', async () => {
+test('retries request timeouts, rate limits, and transport errors before recovering', async () => {
   const result = await deliverEvent({}, async (_, { attempt }) => {
     if (attempt === 1) throw new Error('offline transport simulation');
-    return { status: attempt === 2 ? 429 : 200 };
+    if (attempt === 2) return { status: 408 };
+    return { status: attempt === 3 ? 429 : 200 };
   });
-  assert.deepEqual(result, { delivered: true, attempts: 3, status: 200 });
+  assert.deepEqual(result, { delivered: true, attempts: 4, status: 200 });
 });
 
 test('supports zero retries and validates the retry budget', async () => {
